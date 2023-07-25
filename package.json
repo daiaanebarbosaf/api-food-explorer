@@ -1,0 +1,19 @@
+{
+  "name": "api-food-explorer",
+  "version": "1.0.0",
+  "description": "API desenvolvida no programa Explorer da Rocketseat.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daiaanebarbosaf/api-food-explorer.git"
+  },
+  "author": "Daiane Barbosa Farias",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/daiaanebarbosaf/api-food-explorer/issues"
+  },
+  "homepage": "https://github.com/daiaanebarbosaf/api-food-explorer#readme"
+}
