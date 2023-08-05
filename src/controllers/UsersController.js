@@ -13,7 +13,7 @@ class UsersController {
             throw new AppError("Este e-mail já está em uso.")
         }
 
-        const hashedPassoword = hash(password, 8);
+        const hashedPassoword = await hash(password, 8);
 
         await database.run(
             "INSERT INTO users (name, email, password, is_admin) VALUES (?, ?, ?, ?)",
@@ -22,6 +22,24 @@ class UsersController {
         );
 
         return response.status(201).json();
+    }
+
+    async update(request, response){
+        const { name, email } = request.body;
+        const { id } = request.body;
+
+        const database = await sqliteConnection();
+        const user = await database.get("SELECT * FROM users WHERE id = (?)", [id]);
+
+        if(!user){
+            throw new AppError("Usuário não encontrado");
+        }
+
+        const userWithUpdateUpdateEmail = await database.get("SELECT * FROM users WHERE email = (?)", [email]);
+
+        if(userWithUpdateUpdateEmail && userWithUpdateUpdateEmail.id !== id){
+            throw new AppError("Error e-mail já está em uso.");
+        }
     }
 }
 
