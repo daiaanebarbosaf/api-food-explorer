@@ -8,7 +8,7 @@ module.exports = {
     },
     
     pool: {
-      afterCreate:(conn, cd) => conn.run("PRAGA foreign_keys = ON", cd)
+      afterCreate:(conn, cd) => conn.run("PRAGMA foreign_keys = ON", cd)
     },
 
     migrations: {
