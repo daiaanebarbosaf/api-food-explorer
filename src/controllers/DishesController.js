@@ -25,4 +25,8 @@ class DishesController {
         
         response.json();
     }
+
+
 }
+
+module.exports = DishesController;
