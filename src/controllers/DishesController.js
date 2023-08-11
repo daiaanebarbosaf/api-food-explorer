@@ -37,6 +37,24 @@ class DishesController {
             tags
         });
     }
+
+    async delete(request, response){
+        const { id } = request.params;
+
+        await knex("dishes").where({ id }).delete();
+
+        return response.json();
+    }
+
+    async index(request, response){
+        const { user_id } = request.query;
+
+        const dishes = await knex("dishes")
+        .where({ user_id})
+        .orderBy("title");
+
+        return response.json({ dishes })
+    }
 }
 
 module.exports = DishesController;
