@@ -47,14 +47,24 @@ class DishesController {
     }
 
     async index(request, response){
-        const { user_id, title } = request.query;
+        const { title, user_id, tags } = request.query;
 
-        const dishes = await knex("dishes")
-        .where({ user_id})
-        .whereLike("title", `%${title}%`)
-        .orderBy("title");
+        let dishes;
 
-        return response.json({ dishes })
+        if(tags){
+            const filterTags = tags.split(',').map(tag => tag.trim());
+            dishes = await knex("tags").whereIn("name", filterTags);
+
+            return response.json(dishes);
+
+        } else {
+            dishes = await knex("dishes")
+                .where({ user_id })
+                .whereLike("title", `%${title}%`)
+                .orderBy("title");
+
+            return response.json(dishes);
+        }
     }
 }
 
