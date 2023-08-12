@@ -53,7 +53,17 @@ class DishesController {
 
         if(tags){
             const filterTags = tags.split(',').map(tag => tag.trim());
-            dishes = await knex("tags").whereIn("name", filterTags);
+            dishes = await knex("tags")
+                .select([
+                    "dishes.id",
+                    "dishes.title",
+                    "dishes.user_id"
+                ])
+                .where("dishes.user_id", user_id)
+                .whereLike("dishes.title", `%${title}%`)
+                .whereIn("name", filterTags)
+                .innerJoin("dishes", "dishes.id", "tags.dishes_id")
+                .orderBy("dishes.title");
 
             return response.json(dishes);
 
