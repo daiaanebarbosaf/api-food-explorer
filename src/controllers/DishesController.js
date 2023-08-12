@@ -47,10 +47,11 @@ class DishesController {
     }
 
     async index(request, response){
-        const { user_id } = request.query;
+        const { user_id, title } = request.query;
 
         const dishes = await knex("dishes")
         .where({ user_id})
+        .whereLike("title", `%${title}%`)
         .orderBy("title");
 
         return response.json({ dishes })
