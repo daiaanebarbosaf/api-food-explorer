@@ -65,16 +65,24 @@ class DishesController {
                 .innerJoin("dishes", "dishes.id", "tags.dishes_id")
                 .orderBy("dishes.title");
 
-            return response.json(dishes);
-
         } else {
             dishes = await knex("dishes")
                 .where({ user_id })
                 .whereLike("title", `%${title}%`)
-                .orderBy("title");
-
-            return response.json(dishes);
+                .orderBy("title");   
         }
+
+        const userTags = await knex("tags").where({ user_id });
+        const dishesWithTags = dishes.map(dishes => {
+            const dishesTags = userTags.filter(tag => tag.dishes_id ===  dishes.id);
+
+            return {
+                ...dishes,
+                tags: dishesTags
+            }
+        });
+
+        return response.json(dishesWithTags);
     }
 }
 
