@@ -5,7 +5,7 @@ const { application } = require("express");
 
 class UsersController {
     async create(request, response){
-        const { name, email, password, is_admin } = request.body;
+        const { name, email, password } = request.body;
 
         const database = await sqliteConnection();
         const checkUserExists = await database.get("SELECT * FROM users WHERE email = (?)", [email]);
@@ -17,8 +17,8 @@ class UsersController {
         const hashedPassoword = await hash(password, 8);
 
         await database.run(
-            "INSERT INTO users (name, email, password, is_admin) VALUES (?, ?, ?, ?)",
-            [name, email, hashedPassoword, is_admin]
+            "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+            [name, email, hashedPassoword]
         
         );
 
