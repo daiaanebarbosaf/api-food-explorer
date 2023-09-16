@@ -5,7 +5,7 @@ exports.up = knex => knex.schema.createTable("dishes", table => {
     table.text("description");
     table.text("categoty");
     table.real("price");
-    table.text("dish");
+    table.varchar("imgdish");
     table.integer("user_id").references("id").inTable("users");
 
     table.timestamp("created_at").default(knex.fn.now());
