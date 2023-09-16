@@ -2,6 +2,7 @@ require("express-async-errors");
 
 const migrationsRun = require("./database/sqlite/migrations");
 const AppError = require("./utils/AppError");
+const uploadConfig = require("./configs/upload");
 
 const express = require("express");
 
@@ -11,17 +12,19 @@ migrationsRun();
 const app = express();
 app.use(express.json());
 
+app.use("/files", express.static(uploadConfig.UPLOADS_FOLDER));
+
 app.use(routes);
 
-app.use((error, request, response, next) =>{
-    if( error instanceof AppError ){
-        return response.status(error.statusCode).json({
+app.use((err, request, response, next) =>{
+    if( err instanceof AppError ){
+        return response.status(err.statusCode).json({
             status: "error",
-            message: error.message
+            message: err.message
         });
     }
 
-    console.error(error);
+    console.error(err);
 
     return response.status(500).json({
         status: "error",
