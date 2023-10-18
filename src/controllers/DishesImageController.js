@@ -14,7 +14,7 @@ class DishesImageController {
         .where({ id: dish_id }).first();
 
         if(!dish){
-            throw new AppError("Somente usuário compermissão de Administrador pode mudar a imagem", 401);
+            throw new AppError("Somente usuário com permissão de Administrador pode mudar a imagem", 401);
         }
 
         if(dish.imgdish){
