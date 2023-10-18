@@ -65,6 +65,7 @@ class DishesController {
                 .whereLike("dishes.title", `%${title}%`)
                 .whereIn("name", filterTags)
                 .innerJoin("dishes", "dishes.id", "tags.dishes_id")
+                .groupBy("dishes.id")
                 .orderBy("dishes.title");
 
         } else {
