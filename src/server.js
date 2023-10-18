@@ -18,15 +18,15 @@ app.use("/files", express.static(uploadConfig.UPLOADS_FOLDER));
 
 app.use(routes);
 
-app.use((err, request, response, next) =>{
-    if( err instanceof AppError ){
-        return response.status(err.statusCode).json({
+app.use(( error, request, response, next) => {
+    if( error instanceof AppError ){
+        return response.status(error.statusCode).json({
             status: "error",
-            message: err.message
+            message: error.message
         });
     }
 
-    console.error(err);
+    console.error(error)
 
     return response.status(500).json({
         status: "error",
