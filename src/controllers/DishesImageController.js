@@ -1,14 +1,14 @@
 const knex = require("../database/knex");
 const AppError = require("../utils/AppError");
-const DiskStorange = require("../providers/DiskStorange");
+const DiskStorage = require("../providers/DiskStorage");
 
 class DishesImageController {
     async update(request, response){
-        const dish_id = request.user.id;
+
+        const diskStorage = new DiskStorage();
+        const {dish_id} = request.user.id;
 
         const imgdishFilename = request.file.filename;
-
-        const diskStorange = new DiskStorange();
 
         const dish = await knex("dishes")
         .where({ id: dish_id }).first();
@@ -18,10 +18,10 @@ class DishesImageController {
         }
 
         if(dish.imgdish){
-            await diskStorange.deleteFile(dish.imgdish);
+            await diskStorage.deleteFile(dish.imgdish);
         }
 
-        const filename = await diskStorange.saveFile(imgdishFilename);
+        await diskStorage.saveFile(imgdishFilename);
         dish.imgdish = filename;
 
         await knex("dishes").update(dish).where({ id: dish_id });
