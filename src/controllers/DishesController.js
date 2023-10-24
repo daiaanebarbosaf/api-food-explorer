@@ -1,7 +1,4 @@
 const knex = require("../database/knex");
-const DiskStorage = require("../providers/DiskStorage");
-const AppError = require("../utils/AppError");
-
 
 class DishesController {
     async create(request, response){
@@ -18,17 +15,16 @@ class DishesController {
             
         });
 
-        const tagsInsert = tags.map(name => {
+        const tagsInsert = tags.map(tag => {
             return {
-                dishes_id,
-                name,
-                user_id
+                name: tag,
+                dishes_id
             }
         });
 
         await knex("tags").insert(tagsInsert);
         
-        response.json();
+        return response.status(201).json(dishes_id);
     }
 
     async show(request, response){
