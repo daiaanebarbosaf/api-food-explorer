@@ -5,23 +5,30 @@ const DiskStorage = require("../providers/DiskStorage");
 class DishesImageController {
     async update(request, response){
 
-        const diskStorage = new DiskStorage();
-        const {dish_id} = request.user.id;
-
+        const { dish_id } = request.body;
+        const user_id = request.user.id;
         const imgdishFilename = request.file.filename;
+        
+        const diskStorage = new DiskStorage();
+
+        const user = await knex("users").where({ id: user_id }).first();
+
+        if(!user) {
+            throw new AppError("Somente usuário com permissão de Administrador pode mudar a imagem", 401);
+        }
 
         const dish = await knex("dishes")
-        .where({ id: dish_id }).first();
+        .where({ id: dish_id, user_id }).first();
 
         if(!dish){
-            throw new AppError("Somente usuário com permissão de Administrador pode mudar a imagem", 401);
+            throw new AppError("Prato não existe", 404);
         }
 
         if(dish.imgdish){
             await diskStorage.deleteFile(dish.imgdish);
         }
 
-        await diskStorage.saveFile(imgdishFilename);
+        const filename = await diskStorage.saveFile(imgdishFilename);
         dish.imgdish = filename;
 
         await knex("dishes").update(dish).where({ id: dish_id });
