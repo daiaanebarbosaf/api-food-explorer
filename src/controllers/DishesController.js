@@ -15,16 +15,47 @@ class DishesController {
             
         });
 
-        const tagsInsert = tags.map(tag => {
+        const tagsInsert = tags.map(name => {
             return {
-                name: tag,
-                dishes_id
+                dishes_id,
+                name,
+                user_id
             }
         });
 
         await knex("tags").insert(tagsInsert);
         
         return response.status(201).json(dishes_id);
+    }
+
+    async update(request, response){
+        const { id } = request.params;
+        const { title, description, categoty, price, tags } = request.body;
+        console.log( title, description, categoty, price, tags)
+        
+
+        const dish = await knex("dishes").where({ id }).first();
+
+        if (!dish) {
+            throw new AppError("Prato não encontrado.");
+        }
+
+        
+        price === price ? dish.price : price;
+
+        const dishUpdate = {
+            title,
+            description: description ?? dish.description,
+            categoty: categoty ?? dish.categoty,
+            price,
+          };
+
+        await knex("dishes")
+        .where({ id })
+        .update(dishUpdate);
+
+        return response.json();
+
     }
 
     async show(request, response){
