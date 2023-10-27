@@ -18,6 +18,7 @@ dishesRoutes.use(ensureAuthenticated);
 
 dishesRoutes.get("/", dishesController.index);
 dishesRoutes.post("/", dishesController.create);
+dishesRoutes.patch("/:id", dishesController.update);
 dishesRoutes.get("/:id", dishesController.show);
 dishesRoutes.delete("/:id", dishesController.delete);
 dishesRoutes.patch("/", ensureAuthenticated, upload.single("imgdish"), dishesImageController.update)
