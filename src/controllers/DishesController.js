@@ -40,9 +40,6 @@ class DishesController {
             throw new AppError("Prato não encontrado.");
         }
 
-        
-        price === price ? dish.price : price;
-
         const dishUpdate = {
             title,
             description: description ?? dish.description,
