@@ -1,4 +1,5 @@
 const knex = require("../database/knex");
+const DiskStorage = require("../providers/DiskStorage");
 
 class DishesController {
     async create(request, response){
@@ -31,21 +32,49 @@ class DishesController {
     async update(request, response){
         const { id } = request.params;
         const { title, description, categoty, price, tags } = request.body;
-        console.log( title, description, categoty, price, tags)
+
+        const user_id = request.user.id;
+
+        const imageFilename = request.file?.filename;
+    
         
+        const dishes_id = await knex("dishes").where({ id }).first();
 
-        const dish = await knex("dishes").where({ id }).first();
-
-        if (!dish) {
+        if (!dishes_id) {
             throw new AppError("Prato não encontrado.");
         }
 
         const dishUpdate = {
+            imageFilename,
             title,
-            description: description ?? dish.description,
-            categoty: categoty ?? dish.categoty,
+            description,
+            categoty,
             price,
-          };
+        };
+
+
+        console.log(tags)
+
+        if(Object.keys(tags).length > 0){
+            //await knex("tags").where({ dishes_id: id }).delete();
+
+            const tagsInsert = tags.map(name => {
+                return {
+                    dishes_id: id,
+                    name,
+                    user_id
+                }
+
+            });
+
+            if (Object.keys(tagsInsert).length > 0) {
+                await knex("tags").where('dishes_id', id).delete();
+                await knex("tags").insert(tagsInsert);
+            }
+
+            //await knex("tags").where({ dishes_id: id }).insert(tagsInsert);
+           
+        } 
 
         await knex("dishes")
         .where({ id })
