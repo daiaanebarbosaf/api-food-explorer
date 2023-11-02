@@ -34,9 +34,9 @@ class DishesController {
         const { title, description, categoty, price, tags } = request.body;
 
         const user_id = request.user.id;
-
-        const imageFilename = request.file?.filename;
-    
+        const { dish_id } = request.body;
+        const imgdishFilename = request.file?.filename;
+        console.log(imgdishFilename)
         
         const dishes_id = await knex("dishes").where({ id }).first();
 
@@ -45,18 +45,36 @@ class DishesController {
         }
 
         const dishUpdate = {
-            imageFilename,
             title,
             description,
             categoty,
             price,
         };
 
+        if (imgdishFilename) {
+            const diskStorage = new DiskStorage();
 
-        console.log(tags)
+            const dish = await knex("dishes")
+                .where({ id: dish_id, user_id })
+                .first();
+
+        
+                if(dish.imgdish){
+                    await diskStorage.deleteFile(dish.imgdish);
+                }
+        
+
+            const filename = await diskStorage.saveFile(imgdishFilename);
+            dish.imgdish = filename;
+
+            await knex("dishes").update(dish).where({ id: dish_id });
+            return response.json(dish);
+            
+        } else {
+            console.log("Não há imagem definida")
+        }
 
         if(Object.keys(tags).length > 0){
-            //await knex("tags").where({ dishes_id: id }).delete();
 
             const tagsInsert = tags.map(name => {
                 return {
@@ -67,15 +85,16 @@ class DishesController {
 
             });
 
-            if (Object.keys(tagsInsert).length > 0) {
+            if (Object.keys(tagsInsert).length > 0  ) {
                 await knex("tags").where('dishes_id', id).delete();
                 await knex("tags").insert(tagsInsert);
             }
-
-            //await knex("tags").where({ dishes_id: id }).insert(tagsInsert);
            
         } 
 
+
+
+        
         await knex("dishes")
         .where({ id })
         .update(dishUpdate);
