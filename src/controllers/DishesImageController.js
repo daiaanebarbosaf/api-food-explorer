@@ -7,11 +7,16 @@ class DishesImageController {
 
         const { dish_id } = request.body;
         const user_id = request.user.id;
-        const imgdishFilename = request.file.filename;
-        
+
         const diskStorage = new DiskStorage();
+       
+
+        const imgdishFilename = request.file.filename;
+        //console.log(imgdishFilename + " Imagem Image Controller")
+
 
         const user = await knex("users").where({ id: user_id }).first();
+
 
         if(!user) {
             throw new AppError("Somente usuário com permissão de Administrador pode mudar a imagem", 401);
@@ -27,6 +32,7 @@ class DishesImageController {
         if(dish.imgdish){
             await diskStorage.deleteFile(dish.imgdish);
         }
+
 
         const filename = await diskStorage.saveFile(imgdishFilename);
         dish.imgdish = filename;
