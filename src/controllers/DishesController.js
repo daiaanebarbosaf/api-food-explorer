@@ -130,27 +130,34 @@ class DishesController {
 
         let dishes;
 
-        if(tags){
-            const filterTags = tags.split(',').map(tag => tag.trim());
-            dishes = await knex("tags")
-                .select([
-                    "dishes.id",
-                    "dishes.title",
-                    "dishes.user_id"
-                ])
-                .where("dishes.user_id", user_id)
-                .whereLike("dishes.title", `%${title}%`)
-                .whereIn("name", filterTags)
-                .innerJoin("dishes", "dishes.id", "tags.dishes_id")
-                .groupBy("dishes.id")
-                .orderBy("dishes.title");
+        console.log(title, tags)
+        
+        if(title){
+            const dishesByTitle = await knex('dishes')
+            .whereLike('title', `%${title}%`)
+            .orderBy('title');
+
+            if(dishesByTitle.length == 0){
+                const dishesByTags = await knex('tags')
+
+                .select('dishes.*')
+                .where('tags.name', 'like', `%${title}%`)
+                .innerJoin('dishes', 'dishes.id', 'tags.dishes_id')
+                .orderBy('dishes.title')
+                .groupBy('dishes.id');
+
+                dishes = dishesByTags;
+            } else {
+                dishes = dishesByTitle
+            }
 
         } else {
             dishes = await knex("dishes")
-                .where({ user_id })
                 .whereLike("title", `%${title}%`)
                 .orderBy("title");   
         }
+
+
 
         const userTags = await knex("tags").where({ user_id });
         const dishesWithTags = dishes.map(dishes => {
