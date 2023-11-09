@@ -18,10 +18,10 @@ const dishesImageController = new DishesImageController();
 dishesRoutes.use(ensureAuthenticated);
 
 dishesRoutes.get("/", dishesController.index);
-dishesRoutes.post("/", verifyUserAuthorization("admin"), dishesController.create);
-dishesRoutes.put("/:id", verifyUserAuthorization("admin"),dishesController.update);
+dishesRoutes.post("/", verifyUserAuthorization("customer"), dishesController.create);
+dishesRoutes.put("/:id", verifyUserAuthorization("customer"),dishesController.update);
 dishesRoutes.get("/:id", dishesController.show);
-dishesRoutes.delete("/:id", verifyUserAuthorization("admin"), dishesController.delete);
-dishesRoutes.patch("/", verifyUserAuthorization("admin"),ensureAuthenticated, upload.single("imgdish"), dishesImageController.update)
+dishesRoutes.delete("/:id", verifyUserAuthorization("customer"), dishesController.delete);
+dishesRoutes.patch("/", verifyUserAuthorization("customer"),ensureAuthenticated, upload.single("imgdish"), dishesImageController.update)
 
 module.exports = dishesRoutes;
