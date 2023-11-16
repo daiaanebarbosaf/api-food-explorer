@@ -129,8 +129,6 @@ class DishesController {
         const user_id = request.user.id;
 
         let dishes;
-
-        console.log(title, tags)
         
         if(title){
             const dishesByTitle = await knex('dishes')
