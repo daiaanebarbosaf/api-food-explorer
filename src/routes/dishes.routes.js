@@ -17,7 +17,7 @@ const dishesImageController = new DishesImageController();
 
 dishesRoutes.use(ensureAuthenticated);
 
-dishesRoutes.get("/", dishesController.index);
+dishesRoutes.get("/", ensureAuthenticated, dishesController.index);
 dishesRoutes.post("/", verifyUserAuthorization("customer"), dishesController.create);
 dishesRoutes.put("/:id", verifyUserAuthorization("customer"),dishesController.update);
 dishesRoutes.get("/:id", dishesController.show);
