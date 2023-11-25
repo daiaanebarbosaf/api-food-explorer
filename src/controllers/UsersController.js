@@ -14,10 +14,19 @@ class UsersController {
         if(checkUserExists.length > 0){
             throw new AppError("Este e-mail já está em uso.")
         }
+        
 
-        const hashedPassword = await hash(password, 8);
+        if(password.length >= 6){
+            console.log(password)
+            const hashedPassword = await hash(password, 8);
 
-        await knex("users").insert({ name, email, password: hashedPassword });
+            await knex("users").insert({ name, email, password: hashedPassword });
+        } else {
+            throw new AppError("A senha deve ter no mínimo 6 caracteres.")
+   
+        }
+
+ 
 
         return response.status(201).json();
     }
