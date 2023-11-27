@@ -15,7 +15,9 @@ class UsersController {
             throw new AppError("Este e-mail já está em uso.")
         }
         
+
         if(password.length >= 6){
+            console.log(password)
             const hashedPassword = await hash(password, 8);
 
             await knex("users").insert({ name, email, password: hashedPassword });
