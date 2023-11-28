@@ -101,13 +101,18 @@ Crie um arquivo .env de acordo com o arquivo .env.example e preencha os campos A
 
 <h2 id="tools">🛠️ Ferramentas</h2>
 
+No inicio do projeto utilizei o ```Insomnia``` para simular o front-end.
+O ```Beekeeper``` foi utilizado para ver o banco de dados e fazer ajustes nas tabelas enquanto a parte visual não estava pronta.
+
 - Insomnia;
 - Beekeeper.
 
-<h2 id="#consideration">Considerações Finais</h2>
+<h2 id="#consideration">🥰 Considerações Finais</h2>
 
-É com muito orgulho que apresento para você meu primeiro projeto com React!!!<br>
-Foi muito desafiador... com esse projeto apresendi muito mais do que qualquer linguagem pode traduzir, espero que goste do que vê aqui. Aceito sugestões e feedbacks, pois a graça é seguir evoluindo!
+Com imensa satisfação, compartilho com você o meu primeiro projeto Full Stack em JavaScript, utilizando as tecnologias React e Node!<br>
+Esta jornada foi extremamente desafiadora, proporcionando um aprendizado que vai além do que qualquer linguagem pode traduzir.<br> 
+Espero que aprecie o que foi desenvolvido aqui.<br>
+Estou aberta a sugestões e feedbacks, pois a verdadeira beleza está na constante evolução!
 
 <h2 id="license">📝 Licença</h2>
 
