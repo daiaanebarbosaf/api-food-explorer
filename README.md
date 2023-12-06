@@ -43,7 +43,6 @@ A aplicação apresenta as seguintes funcionalidades:
 - Mostrar pratos cadastrados
 - Filtrar pratos
 - Mostrar detalhes do prato
-- Remover prato dos favoritos
 - Editar prato
 - Excluir prato
 - Logout
